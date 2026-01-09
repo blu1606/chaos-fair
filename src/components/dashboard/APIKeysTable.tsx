@@ -85,16 +85,16 @@ export const APIKeysTable = () => {
   }
 
   return (
-    <div className="bg-background border border-border rounded-lg overflow-hidden">
+    <div className="bg-card border border-border rounded-lg overflow-hidden">
       <Table>
         <TableHeader>
-          <TableRow className="bg-slate-50 hover:bg-slate-50">
-            <TableHead className="font-semibold text-muted-foreground">Key Name</TableHead>
-            <TableHead className="font-semibold text-muted-foreground">Key</TableHead>
-            <TableHead className="font-semibold text-muted-foreground hidden md:table-cell">Created</TableHead>
-            <TableHead className="font-semibold text-muted-foreground hidden lg:table-cell">Last Used</TableHead>
-            <TableHead className="font-semibold text-muted-foreground">Status</TableHead>
-            <TableHead className="font-semibold text-muted-foreground w-[60px]">Actions</TableHead>
+          <TableRow className="bg-muted/50 hover:bg-muted/50">
+            <TableHead className="font-semibold text-foreground">Key Name</TableHead>
+            <TableHead className="font-semibold text-foreground">Key</TableHead>
+            <TableHead className="font-semibold text-foreground hidden md:table-cell">Created</TableHead>
+            <TableHead className="font-semibold text-foreground hidden lg:table-cell">Last Used</TableHead>
+            <TableHead className="font-semibold text-foreground">Status</TableHead>
+            <TableHead className="font-semibold text-foreground w-[60px]">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
