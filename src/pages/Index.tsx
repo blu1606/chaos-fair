@@ -2,6 +2,8 @@ import ParticleCanvas from '@/components/ParticleCanvas';
 import HeroSection from '@/components/HeroSection';
 import ProblemSolutionSection from '@/components/ProblemSolutionSection';
 import HowItWorksSection from '@/components/HowItWorksSection';
+import LiveStatsSection from '@/components/LiveStatsSection';
+import UseCasesSection from '@/components/UseCasesSection';
 
 const Index = () => {
   return (
@@ -17,6 +19,12 @@ const Index = () => {
       
       {/* How It Works */}
       <HowItWorksSection />
+      
+      {/* Live Stats */}
+      <LiveStatsSection />
+      
+      {/* Use Cases */}
+      <UseCasesSection />
     </main>
   );
 };
