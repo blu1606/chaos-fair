@@ -136,16 +136,16 @@ const ComparisonSection = () => {
           <table className="w-full table-auto">
             <thead>
               <tr className="bg-slate-900">
-                <th className="text-left px-3 py-3 font-display text-sm text-muted-foreground font-medium">
+                <th className="text-center px-3 py-4 font-display text-sm text-muted-foreground font-medium">
                   Feature
                 </th>
-                <th className="text-center px-2 py-3 font-display text-sm text-muted-foreground font-medium">
+                <th className="text-center px-2 py-4 font-display text-sm text-muted-foreground font-medium">
                   Centralized RNG
                 </th>
-                <th className="text-center px-2 py-3 font-display text-sm text-muted-foreground font-medium">
+                <th className="text-center px-2 py-4 font-display text-sm text-muted-foreground font-medium">
                   Typical DeFi RNG
                 </th>
-                <th className="text-center px-2 py-3 font-display text-sm text-primary font-semibold bg-primary/5 border-x border-primary/20">
+                <th className="text-center px-2 py-4 font-display text-sm text-primary font-semibold bg-primary/5 border-x border-primary/20">
                   <span className="inline-flex items-center gap-1.5">
                     deKAOS
                     <Sparkles className="w-4 h-4" />
@@ -161,20 +161,20 @@ const ComparisonSection = () => {
                     index % 2 === 0 ? 'bg-slate-900/30' : 'bg-slate-900/60'
                   }`}
                 >
-                  <td className="px-3 py-2.5 font-medium text-foreground text-sm">
+                  <td className="px-3 py-4 font-medium text-foreground text-sm text-center">
                     {row.feature}
                   </td>
-                  <td className="px-2 py-2.5 text-center text-sm">
+                  <td className="px-2 py-4 text-center text-sm">
                     <span className="inline-flex justify-center">
                       {renderCell(row.centralized)}
                     </span>
                   </td>
-                  <td className="px-2 py-2.5 text-center text-sm">
+                  <td className="px-2 py-4 text-center text-sm">
                     <span className="inline-flex justify-center">
                       {renderCell(row.defiRng)}
                     </span>
                   </td>
-                  <td className="px-2 py-2.5 text-center text-sm font-medium bg-primary/5 border-x border-primary/20">
+                  <td className="px-2 py-4 text-center text-sm font-medium bg-primary/5 border-x border-primary/20">
                     <span className="inline-flex justify-center">
                       {renderCell(row.dekaos, true)}
                     </span>
