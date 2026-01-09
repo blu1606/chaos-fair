@@ -131,9 +131,9 @@ const ComparisonSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
-          className="hidden md:block overflow-hidden rounded-xl border border-slate-700/50"
+          className="hidden md:block overflow-hidden rounded-xl border border-slate-700/50 max-w-4xl mx-auto"
         >
-          <table className="w-full">
+          <table className="w-full table-auto">
             <thead>
               <tr className="bg-slate-900">
                 <th className="text-left px-3 py-3 font-display text-sm text-muted-foreground font-medium">
