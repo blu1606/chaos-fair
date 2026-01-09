@@ -7,6 +7,7 @@ import UseCasesSection from '@/components/UseCasesSection';
 import DevPlaygroundSection from '@/components/DevPlaygroundSection';
 import ComparisonSection from '@/components/ComparisonSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
+import TrustSecuritySection from '@/components/TrustSecuritySection';
 import FAQSection from '@/components/FAQSection';
 import FooterSection from '@/components/FooterSection';
 
@@ -39,6 +40,9 @@ const Index = () => {
       
       {/* Testimonials */}
       <TestimonialsSection />
+      
+      {/* Trust & Security */}
+      <TrustSecuritySection />
       
       {/* FAQ */}
       <FAQSection />
