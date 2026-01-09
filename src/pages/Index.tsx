@@ -4,6 +4,7 @@ import ProblemSolutionSection from '@/components/ProblemSolutionSection';
 import HowItWorksSection from '@/components/HowItWorksSection';
 import LiveStatsSection from '@/components/LiveStatsSection';
 import UseCasesSection from '@/components/UseCasesSection';
+import FooterSection from '@/components/FooterSection';
 
 const Index = () => {
   return (
@@ -25,6 +26,9 @@ const Index = () => {
       
       {/* Use Cases */}
       <UseCasesSection />
+      
+      {/* Footer */}
+      <FooterSection />
     </main>
   );
 };
