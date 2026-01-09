@@ -1,64 +1,109 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Check, X, AlertTriangle, DollarSign, Sparkles } from 'lucide-react';
+import { ReactNode } from 'react';
+
+type CellType = 'success' | 'warning' | 'error' | 'double-success';
+
+interface ComparisonCell {
+  type: CellType;
+  text?: string;
+}
 
 interface ComparisonRow {
   feature: string;
-  centralized: string;
-  defiRng: string;
-  dekaos: string;
+  centralized: ComparisonCell;
+  defiRng: ComparisonCell;
+  dekaos: ComparisonCell;
 }
 
 const comparisonData: ComparisonRow[] = [
   {
     feature: 'Decentralized',
-    centralized: '❌',
-    defiRng: '✅',
-    dekaos: '✅✅',
+    centralized: { type: 'error' },
+    defiRng: { type: 'success' },
+    dekaos: { type: 'double-success' },
   },
   {
     feature: 'Physical entropy',
-    centralized: '❌',
-    defiRng: '❌',
-    dekaos: '✅',
+    centralized: { type: 'error' },
+    defiRng: { type: 'error' },
+    dekaos: { type: 'success' },
   },
   {
     feature: 'On-chain proofs',
-    centralized: '❌',
-    defiRng: '✅',
-    dekaos: '✅',
+    centralized: { type: 'error' },
+    defiRng: { type: 'success' },
+    dekaos: { type: 'success' },
   },
   {
     feature: 'Trust required',
-    centralized: '⚠️ High',
-    defiRng: '⚠️ Medium',
-    dekaos: '✅ Low',
+    centralized: { type: 'warning', text: 'High' },
+    defiRng: { type: 'warning', text: 'Medium' },
+    dekaos: { type: 'success', text: 'Low' },
   },
   {
     feature: 'API cost',
-    centralized: '💰 High',
-    defiRng: '💰💰 Very high',
-    dekaos: '✅ Affordable',
+    centralized: { type: 'warning', text: 'High' },
+    defiRng: { type: 'error', text: 'Very high' },
+    dekaos: { type: 'success', text: 'Affordable' },
   },
   {
     feature: 'Latency',
-    centralized: '✅ Low',
-    defiRng: '⚠️ Medium',
-    dekaos: '✅ Low',
+    centralized: { type: 'success', text: 'Low' },
+    defiRng: { type: 'warning', text: 'Medium' },
+    dekaos: { type: 'success', text: 'Low' },
   },
   {
     feature: 'SLA / Uptime',
-    centralized: '⚠️ Good',
-    defiRng: '⚠️ Variable',
-    dekaos: '✅ 99.97%',
+    centralized: { type: 'warning', text: 'Good' },
+    defiRng: { type: 'warning', text: 'Variable' },
+    dekaos: { type: 'success', text: '99.97%' },
   },
   {
     feature: 'Community support',
-    centralized: '❌ Closed',
-    defiRng: '⚠️ Mixed',
-    dekaos: '✅ Active',
+    centralized: { type: 'error', text: 'Closed' },
+    defiRng: { type: 'warning', text: 'Mixed' },
+    dekaos: { type: 'success', text: 'Active' },
   },
 ];
+
+const renderCell = (cell: ComparisonCell, isDekaos = false): ReactNode => {
+  const iconClass = 'w-4 h-4 flex-shrink-0';
+  
+  switch (cell.type) {
+    case 'success':
+      return (
+        <span className={`inline-flex items-center gap-1.5 ${isDekaos ? 'text-emerald-400' : 'text-emerald-500'}`}>
+          <Check className={iconClass} />
+          {cell.text && <span>{cell.text}</span>}
+        </span>
+      );
+    case 'double-success':
+      return (
+        <span className="inline-flex items-center gap-0.5 text-emerald-400">
+          <Check className={iconClass} />
+          <Check className={`${iconClass} -ml-2`} />
+        </span>
+      );
+    case 'warning':
+      return (
+        <span className="inline-flex items-center gap-1.5 text-amber-500">
+          <AlertTriangle className={iconClass} />
+          {cell.text && <span>{cell.text}</span>}
+        </span>
+      );
+    case 'error':
+      return (
+        <span className="inline-flex items-center gap-1.5 text-red-500">
+          <X className={iconClass} />
+          {cell.text && <span>{cell.text}</span>}
+        </span>
+      );
+    default:
+      return null;
+  }
+};
 
 const ComparisonSection = () => {
   return (
@@ -101,7 +146,10 @@ const ComparisonSection = () => {
                   Typical DeFi RNG
                 </th>
                 <th className="text-center p-4 font-display text-sm text-primary font-semibold bg-primary/5 border-x border-primary/20">
-                  deKAOS ✨
+                  <span className="inline-flex items-center gap-1.5">
+                    deKAOS
+                    <Sparkles className="w-4 h-4" />
+                  </span>
                 </th>
               </tr>
             </thead>
@@ -116,14 +164,20 @@ const ComparisonSection = () => {
                   <td className="p-4 font-medium text-foreground text-sm">
                     {row.feature}
                   </td>
-                  <td className="p-4 text-center text-sm text-muted-foreground">
-                    {row.centralized}
+                  <td className="p-4 text-center text-sm">
+                    <span className="inline-flex justify-center">
+                      {renderCell(row.centralized)}
+                    </span>
                   </td>
-                  <td className="p-4 text-center text-sm text-muted-foreground">
-                    {row.defiRng}
+                  <td className="p-4 text-center text-sm">
+                    <span className="inline-flex justify-center">
+                      {renderCell(row.defiRng)}
+                    </span>
                   </td>
-                  <td className="p-4 text-center text-sm font-medium text-emerald-400 bg-primary/5 border-x border-primary/20">
-                    {row.dekaos}
+                  <td className="p-4 text-center text-sm font-medium bg-primary/5 border-x border-primary/20">
+                    <span className="inline-flex justify-center">
+                      {renderCell(row.dekaos, true)}
+                    </span>
                   </td>
                 </tr>
               ))}
@@ -152,16 +206,22 @@ const ComparisonSection = () => {
               {/* Comparison values */}
               <div className="grid grid-cols-3 divide-x divide-slate-700/50">
                 <div className="p-3 text-center">
-                  <p className="text-xs text-muted-foreground mb-1">Centralized</p>
-                  <p className="text-sm">{row.centralized}</p>
+                  <p className="text-xs text-muted-foreground mb-2">Centralized</p>
+                  <span className="inline-flex justify-center text-sm">
+                    {renderCell(row.centralized)}
+                  </span>
                 </div>
                 <div className="p-3 text-center">
-                  <p className="text-xs text-muted-foreground mb-1">DeFi RNG</p>
-                  <p className="text-sm">{row.defiRng}</p>
+                  <p className="text-xs text-muted-foreground mb-2">DeFi RNG</p>
+                  <span className="inline-flex justify-center text-sm">
+                    {renderCell(row.defiRng)}
+                  </span>
                 </div>
                 <div className="p-3 text-center bg-primary/5">
-                  <p className="text-xs text-primary mb-1">deKAOS</p>
-                  <p className="text-sm font-medium text-emerald-400">{row.dekaos}</p>
+                  <p className="text-xs text-primary mb-2">deKAOS</p>
+                  <span className="inline-flex justify-center text-sm">
+                    {renderCell(row.dekaos, true)}
+                  </span>
                 </div>
               </div>
             </motion.div>
