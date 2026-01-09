@@ -12,6 +12,45 @@ interface StatCard {
   showProgress?: boolean;
 }
 
+interface ActivityEvent {
+  emoji: string;
+  description: string;
+  timestamp: string;
+}
+
+const recentActivity: ActivityEvent[] = [
+  {
+    emoji: '⭐',
+    description: 'Node #1842 contributed entropy (epoch 1247).',
+    timestamp: '2 min ago',
+  },
+  {
+    emoji: '✅',
+    description: 'Epoch 1246 finalized – R = 0x5a8b…',
+    timestamp: '5 min ago',
+  },
+  {
+    emoji: '💰',
+    description: '0.247 KAOS rewards claimed by node kaos1x2y3…',
+    timestamp: '8 min ago',
+  },
+  {
+    emoji: '🆕',
+    description: 'New node registered from Vietnam.',
+    timestamp: '12 min ago',
+  },
+  {
+    emoji: '⭐',
+    description: 'Node #892 contributed entropy (epoch 1247).',
+    timestamp: '15 min ago',
+  },
+  {
+    emoji: '✅',
+    description: 'Epoch 1245 finalized – R = 0x3f2c…',
+    timestamp: '20 min ago',
+  },
+];
+
 const LiveStatsSection = () => {
   const [stats, setStats] = useState({
     nodesOnline: 1247,
@@ -156,6 +195,49 @@ const LiveStatsSection = () => {
                 )}
               </motion.div>
             ))}
+          </div>
+        </motion.div>
+
+        {/* Recent Activity Feed */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="mt-8 flex justify-center"
+        >
+          <div className="w-full max-w-2xl bg-background border border-slate-700/50 rounded-xl p-6">
+            <h3 className="font-display text-lg text-foreground mb-4 text-center sm:text-left">
+              Recent network events
+            </h3>
+            
+            <ul className="space-y-3" role="log" aria-live="polite">
+              {recentActivity.map((event, index) => (
+                <motion.li
+                  key={index}
+                  initial={{ opacity: 0, x: -10 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: 0.05 * index }}
+                  className="flex items-start gap-3 py-2 border-b border-slate-800 last:border-b-0"
+                >
+                  {/* Emoji */}
+                  <span className="text-base flex-shrink-0" aria-hidden="true">
+                    {event.emoji}
+                  </span>
+                  
+                  {/* Description */}
+                  <span className="flex-1 text-sm text-muted-foreground">
+                    {event.description}
+                  </span>
+                  
+                  {/* Timestamp */}
+                  <span className="font-mono text-xs text-slate-500 flex-shrink-0">
+                    {event.timestamp}
+                  </span>
+                </motion.li>
+              ))}
+            </ul>
           </div>
         </motion.div>
       </div>
