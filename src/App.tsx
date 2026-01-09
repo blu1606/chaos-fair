@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import APIKeys from "./pages/APIKeys";
 import Playground from "./pages/Playground";
+import NodeUI from "./pages/NodeUI";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/dashboard/keys" element={<APIKeys />} />
           <Route path="/dashboard/playground" element={<Playground />} />
           <Route path="/dashboard/*" element={<Dashboard />} />
+          <Route path="/node" element={<NodeUI />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
