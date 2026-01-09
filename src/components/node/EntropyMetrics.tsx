@@ -1,3 +1,5 @@
+import { CheckCircle, AlertCircle, XCircle } from "lucide-react";
+
 interface MetricBarProps {
   label: string;
   value: number;
@@ -6,11 +8,13 @@ interface MetricBarProps {
 
 const MetricBar = ({ label, value, status }: MetricBarProps) => {
   const statusConfig = {
-    optimal: { color: "text-green-500", label: "🟢 OPTIMAL" },
-    good: { color: "text-green-500", label: "🟢 GOOD" },
-    ok: { color: "text-amber-500", label: "🟡 OK" },
-    low: { color: "text-red-500", label: "🔴 LOW" },
+    optimal: { color: "text-green-500", label: "OPTIMAL", Icon: CheckCircle },
+    good: { color: "text-green-500", label: "GOOD", Icon: CheckCircle },
+    ok: { color: "text-amber-500", label: "OK", Icon: AlertCircle },
+    low: { color: "text-red-500", label: "LOW", Icon: XCircle },
   };
+
+  const StatusIcon = statusConfig[status].Icon;
 
   return (
     <div className="space-y-1.5">
@@ -24,7 +28,8 @@ const MetricBar = ({ label, value, status }: MetricBarProps) => {
           style={{ width: `${value}%` }}
         />
       </div>
-      <span className={`font-mono text-[9px] ${statusConfig[status].color}`}>
+      <span className={`font-mono text-[9px] ${statusConfig[status].color} flex items-center gap-1`}>
+        <StatusIcon className="w-3 h-3" />
         {statusConfig[status].label}
       </span>
     </div>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { CheckCircle, Clock, XCircle } from "lucide-react";
 
 export const EpochCountdownBox = () => {
   const [timeRemaining, setTimeRemaining] = useState(272); // 4:32 in seconds
@@ -56,17 +57,17 @@ export const EpochCountdownBox = () => {
         <span className="font-mono text-[9px] text-slate-400">Submission:</span>
         {submissionStatus === "submitted" && (
           <span className="font-mono text-[10px] text-green-500 flex items-center gap-1">
-            ✓ Commit Submitted
+            <CheckCircle className="w-3 h-3" /> Commit Submitted
           </span>
         )}
         {submissionStatus === "pending" && (
           <span className="font-mono text-[10px] text-amber-500 flex items-center gap-1">
-            ⏳ Waiting
+            <Clock className="w-3 h-3" /> Waiting
           </span>
         )}
         {submissionStatus === "failed" && (
           <span className="font-mono text-[10px] text-red-500 flex items-center gap-1">
-            ✗ Failed
+            <XCircle className="w-3 h-3" /> Failed
           </span>
         )}
       </div>
