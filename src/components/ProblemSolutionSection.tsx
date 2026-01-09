@@ -15,6 +15,24 @@ const solutionPoints = [
   { icon: Check, text: '**Affordable**: Direct integration, no middleman premium' },
 ];
 
+const comparisonItems = [
+  {
+    label: 'Trust Model',
+    centralized: 'Single provider',
+    dekaos: 'Open network of nodes',
+  },
+  {
+    label: 'Entropy Source',
+    centralized: 'Algorithmic PRNG',
+    dekaos: 'Physical acoustic noise',
+  },
+  {
+    label: 'Verification',
+    centralized: 'Opaque logs',
+    dekaos: 'On-chain, cryptographic proofs',
+  },
+];
+
 const renderBoldText = (text: string) => {
   const parts = text.split(/\*\*(.*?)\*\*/);
   return parts.map((part, i) =>
@@ -114,6 +132,43 @@ const ProblemSolutionSection = () => {
             </ul>
           </motion.div>
         </div>
+
+        {/* Comparison Snapshot Strip */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          viewport={{ once: true }}
+          className="mt-16 p-6 sm:p-8 rounded-2xl border border-slate-700/50 bg-[#0b1220]"
+        >
+          <p className="text-center text-xs font-mono uppercase tracking-widest text-slate-500 mb-6">
+            TL;DR Comparison
+          </p>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
+            {comparisonItems.map((item, i) => (
+              <div key={i} className="text-center">
+                {/* Label */}
+                <p className="font-mono text-[11px] uppercase tracking-wider text-slate-400 mb-3">
+                  {item.label}
+                </p>
+                
+                {/* Pills container */}
+                <div className="flex flex-col gap-2">
+                  {/* Centralized pill */}
+                  <span className="inline-flex items-center justify-center px-3 py-1.5 rounded-full text-xs font-mono bg-red-950/50 border border-red-500/30 text-red-400">
+                    {item.centralized}
+                  </span>
+                  
+                  {/* deKAOS pill */}
+                  <span className="inline-flex items-center justify-center px-3 py-1.5 rounded-full text-xs font-mono bg-emerald-950/50 border border-emerald-500/30 text-emerald-400">
+                    {item.dekaos}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );
