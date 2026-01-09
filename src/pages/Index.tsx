@@ -4,6 +4,7 @@ import ProblemSolutionSection from '@/components/ProblemSolutionSection';
 import HowItWorksSection from '@/components/HowItWorksSection';
 import LiveStatsSection from '@/components/LiveStatsSection';
 import UseCasesSection from '@/components/UseCasesSection';
+import TestimonialsSection from '@/components/TestimonialsSection';
 import FooterSection from '@/components/FooterSection';
 
 const Index = () => {
@@ -26,6 +27,9 @@ const Index = () => {
       
       {/* Use Cases */}
       <UseCasesSection />
+      
+      {/* Testimonials */}
+      <TestimonialsSection />
       
       {/* Footer */}
       <FooterSection />
