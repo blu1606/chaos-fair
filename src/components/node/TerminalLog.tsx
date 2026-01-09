@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { toast } from "@/hooks/use-toast";
+import { CheckCircle, AlertTriangle, XCircle, ArrowRight, LucideIcon } from "lucide-react";
 
 interface LogEntry {
   id: number;
@@ -43,8 +44,9 @@ export const TerminalLog = () => {
   };
 
   const handleExport = () => {
+    const typeSymbols = { success: "✓", warning: "⚠", error: "✗", info: "→" };
     const logText = logs
-      .map((log) => `[${log.timestamp}] ${getIcon(log.type)} ${log.message}`)
+      .map((log) => `[${log.timestamp}] ${typeSymbols[log.type]} ${log.message}`)
       .join("\n");
     const blob = new Blob([logText], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
@@ -56,16 +58,16 @@ export const TerminalLog = () => {
     toast({ description: "Logs exported" });
   };
 
-  const getIcon = (type: LogEntry["type"]) => {
+  const getIcon = (type: LogEntry["type"]): LucideIcon => {
     switch (type) {
       case "success":
-        return "✓";
+        return CheckCircle;
       case "warning":
-        return "⚠️";
+        return AlertTriangle;
       case "error":
-        return "✗";
+        return XCircle;
       case "info":
-        return "→";
+        return ArrowRight;
     }
   };
 
@@ -101,15 +103,16 @@ export const TerminalLog = () => {
         {logs.length === 0 ? (
           <p className="text-slate-500 text-center py-4">No logs yet</p>
         ) : (
-          logs.map((log) => (
-            <div key={log.id} className="flex gap-2">
-              <span className="text-slate-500 shrink-0">[{log.timestamp}]</span>
-              <span className={`shrink-0 ${getColor(log.type)}`}>
-                {getIcon(log.type)}
-              </span>
-              <span className="text-slate-200">{log.message}</span>
-            </div>
-          ))
+          logs.map((log) => {
+            const Icon = getIcon(log.type);
+            return (
+              <div key={log.id} className="flex gap-2 items-start">
+                <span className="text-slate-500 shrink-0">[{log.timestamp}]</span>
+                <Icon className={`w-3 h-3 shrink-0 mt-0.5 ${getColor(log.type)}`} />
+                <span className="text-slate-200">{log.message}</span>
+              </div>
+            );
+          })
         )}
       </div>
 
