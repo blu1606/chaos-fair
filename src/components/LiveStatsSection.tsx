@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { TrendingUp } from 'lucide-react';
+import { TrendingUp, Star, CheckCircle, Coins, UserPlus } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
+import { LucideIcon } from 'lucide-react';
 
 interface StatCard {
   label: string;
@@ -13,39 +14,46 @@ interface StatCard {
 }
 
 interface ActivityEvent {
-  emoji: string;
+  icon: LucideIcon;
+  iconColor: string;
   description: string;
   timestamp: string;
 }
 
 const recentActivity: ActivityEvent[] = [
   {
-    emoji: '⭐',
+    icon: Star,
+    iconColor: 'text-amber-400',
     description: 'Node #1842 contributed entropy (epoch 1247).',
     timestamp: '2 min ago',
   },
   {
-    emoji: '✅',
+    icon: CheckCircle,
+    iconColor: 'text-emerald-400',
     description: 'Epoch 1246 finalized – R = 0x5a8b…',
     timestamp: '5 min ago',
   },
   {
-    emoji: '💰',
+    icon: Coins,
+    iconColor: 'text-amber-500',
     description: '0.247 KAOS rewards claimed by node kaos1x2y3…',
     timestamp: '8 min ago',
   },
   {
-    emoji: '🆕',
+    icon: UserPlus,
+    iconColor: 'text-secondary',
     description: 'New node registered from Vietnam.',
     timestamp: '12 min ago',
   },
   {
-    emoji: '⭐',
+    icon: Star,
+    iconColor: 'text-amber-400',
     description: 'Node #892 contributed entropy (epoch 1247).',
     timestamp: '15 min ago',
   },
   {
-    emoji: '✅',
+    icon: CheckCircle,
+    iconColor: 'text-emerald-400',
     description: 'Epoch 1245 finalized – R = 0x3f2c…',
     timestamp: '20 min ago',
   },
@@ -221,10 +229,8 @@ const LiveStatsSection = () => {
                   transition={{ duration: 0.4, delay: 0.05 * index }}
                   className="flex items-start gap-3 py-2 border-b border-slate-800 last:border-b-0"
                 >
-                  {/* Emoji */}
-                  <span className="text-base flex-shrink-0" aria-hidden="true">
-                    {event.emoji}
-                  </span>
+                  {/* Icon */}
+                  <event.icon className={`w-4 h-4 flex-shrink-0 mt-0.5 ${event.iconColor}`} aria-hidden="true" />
                   
                   {/* Description */}
                   <span className="flex-1 text-sm text-muted-foreground">
