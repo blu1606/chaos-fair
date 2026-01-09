@@ -1,5 +1,7 @@
 import ParticleCanvas from '@/components/ParticleCanvas';
 import HeroSection from '@/components/HeroSection';
+import ProblemSolutionSection from '@/components/ProblemSolutionSection';
+import HowItWorksSection from '@/components/HowItWorksSection';
 
 const Index = () => {
   return (
@@ -10,17 +12,11 @@ const Index = () => {
       {/* Hero section */}
       <HeroSection />
       
-      {/* Placeholder for additional sections */}
-      <section className="min-h-screen flex items-center justify-center px-4">
-        <div className="text-center max-w-3xl mx-auto">
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl text-foreground mb-6">
-            The Future of <span className="text-gradient-primary">Randomness</span>
-          </h2>
-          <p className="text-lg text-muted-foreground">
-            deKAOS harnesses ambient acoustic noise from a global network of nodes to generate cryptographically secure, verifiable randomness on the Solana blockchain.
-          </p>
-        </div>
-      </section>
+      {/* Problem vs Solution */}
+      <ProblemSolutionSection />
+      
+      {/* How It Works */}
+      <HowItWorksSection />
     </main>
   );
 };
