@@ -1,5 +1,5 @@
 import { motion, useInView } from 'framer-motion';
-import { Mic, Hash, ShieldCheck, ArrowRight } from 'lucide-react';
+import { Mic, Hash, ShieldCheck, ArrowRight, ChevronRight } from 'lucide-react';
 import { useRef } from 'react';
 
 const steps = [
@@ -26,6 +26,25 @@ const steps = [
     color: 'cyan',
     description: 'After epoch finalization, all commitments are aggregated into a single verifiable random number, accessible on-chain for your dApps.',
     subtext: 'Randomness available via Solana CPI, HTTP API, or WebSocket subscriptions.',
+  },
+];
+
+const devSteps = [
+  {
+    instruction: 'start_epoch',
+    description: 'creates a new challenge.',
+  },
+  {
+    instruction: 'submit_commit',
+    description: 'Node captures audio, computes features, and submits commitment.',
+  },
+  {
+    instruction: 'finalize_epoch',
+    description: 'aggregates valid commits into R.',
+  },
+  {
+    instruction: 'consume_randomness(epoch_id)',
+    description: 'dApps call on-chain or via HTTP API.',
   },
 ];
 
@@ -152,6 +171,70 @@ const HowItWorksSection = () => {
             />
           ))}
         </div>
+
+        {/* Under the Hood - Developer Expandable */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          viewport={{ once: true }}
+          className="mt-16"
+        >
+          <details className="group rounded-xl border border-primary/30 bg-slate-900/50 overflow-hidden">
+            <summary
+              className="flex items-center justify-between gap-3 px-6 py-4 cursor-pointer list-none select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              aria-label="Expand developer documentation for under the hood details"
+            >
+              <div className="flex items-center gap-3">
+                <ChevronRight 
+                  className="w-5 h-5 text-primary transition-transform duration-200 group-open:rotate-90" 
+                  aria-hidden="true" 
+                />
+                <span className="font-display text-lg text-primary font-semibold">
+                  Under the hood (for developers)
+                </span>
+              </div>
+              <span className="text-sm text-muted-foreground hidden sm:inline">
+                Epoch, commit, finalize, and consume in 4 instructions.
+              </span>
+            </summary>
+
+            <div className="px-6 pb-6 pt-2">
+              {/* Summary visible on mobile when collapsed info is hidden */}
+              <p className="text-sm text-muted-foreground mb-4 sm:hidden">
+                Epoch, commit, finalize, and consume in 4 instructions.
+              </p>
+
+              <ol className="space-y-3">
+                {devSteps.map((step, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/20 text-primary text-xs font-mono flex items-center justify-center">
+                      {i + 1}
+                    </span>
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                      <code className="font-mono text-sm text-secondary bg-slate-800 px-2 py-0.5 rounded">
+                        {step.instruction}
+                      </code>
+                      <span className="text-sm text-muted-foreground">
+                        – {step.description}
+                      </span>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+
+              <div className="mt-6 p-4 rounded-lg bg-slate-800/50 border border-slate-700/50">
+                <p className="font-mono text-xs text-slate-400">
+                  <span className="text-primary">// Example:</span> Consuming randomness in your Solana program
+                </p>
+                <pre className="font-mono text-xs text-cyan-400 mt-2 overflow-x-auto">
+{`let randomness = dekaos::consume_randomness(ctx, epoch_id)?;
+let result = randomness % max_value;`}
+                </pre>
+              </div>
+            </div>
+          </details>
+        </motion.div>
       </div>
     </section>
   );
