@@ -4,6 +4,7 @@ import ProblemSolutionSection from '@/components/ProblemSolutionSection';
 import HowItWorksSection from '@/components/HowItWorksSection';
 import LiveStatsSection from '@/components/LiveStatsSection';
 import UseCasesSection from '@/components/UseCasesSection';
+import DevPlaygroundSection from '@/components/DevPlaygroundSection';
 import ComparisonSection from '@/components/ComparisonSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import FooterSection from '@/components/FooterSection';
@@ -28,6 +29,9 @@ const Index = () => {
       
       {/* Use Cases */}
       <UseCasesSection />
+      
+      {/* Developer Playground Preview */}
+      <DevPlaygroundSection />
       
       {/* Comparison */}
       <ComparisonSection />
