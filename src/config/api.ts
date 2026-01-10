@@ -51,6 +51,7 @@ export const API_ENDPOINTS = {
   
   // Analytics
   analyticsUsage: '/analytics/usage',
+  analyticsEndpoints: '/analytics/endpoints',
   
   // Search
   search: '/search',
