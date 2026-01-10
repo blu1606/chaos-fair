@@ -35,23 +35,28 @@ export const API_CONFIG = {
 // API Endpoints
 export const API_ENDPOINTS = {
   // Dashboard
-  dashboardStats: `${API_BASE_URL}/dashboard-stats`,
+  dashboardStats: '/dashboard/stats',
   
   // API Keys
-  keys: `${API_BASE_URL}/keys`,
-  keyById: (id: string) => `${API_BASE_URL}/keys/${id}`,
+  keys: '/keys',
+  keyById: (id: string) => `/keys/${id}`,
   
   // Randomness
-  generateRandomness: `${API_BASE_URL}/randomness/generate`,
+  generateRandomness: '/randomness/generate',
+  verifyRandomness: '/randomness/verify',
+  vrf: '/randomness/vrf',
   
   // Request Logs
-  requests: `${API_BASE_URL}/requests`,
+  requests: '/requests',
   
   // Analytics
-  analyticsUsage: `${API_BASE_URL}/analytics/usage`,
+  analyticsUsage: '/analytics/usage',
+  
+  // Search
+  search: '/search',
   
   // Health
-  health: `${API_BASE_URL}/health`,
+  health: '/health',
 } as const;
 
 // Helper to build full URL
