@@ -47,6 +47,9 @@ export const API_ENDPOINTS = {
   // Request Logs
   requests: `${API_BASE_URL}/requests`,
   
+  // Analytics
+  analyticsUsage: `${API_BASE_URL}/analytics/usage`,
+  
   // Health
   health: `${API_BASE_URL}/health`,
 } as const;
