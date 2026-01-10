@@ -7,3 +7,4 @@ export * from './dashboard';
 export * from './keys';
 export * from './randomness';
 export * from './account';
+export * from './requests';
