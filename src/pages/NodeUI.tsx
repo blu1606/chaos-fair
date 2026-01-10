@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { NodeIdentityBox } from "@/components/node/NodeIdentityBox";
 import { EpochCountdownBox } from "@/components/node/EpochCountdownBox";
 import { RewardsBox } from "@/components/node/RewardsBox";
@@ -11,6 +11,13 @@ const NodeUI = () => {
   const [isCapturing, setIsCapturing] = useState(false);
   const [isInitialized, setIsInitialized] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
+  const [submitCount, setSubmitCount] = useState(0);
+
+  const handleAutoSubmit = useCallback(() => {
+    setSubmitCount((prev) => prev + 1);
+    // Here you would call the actual submit API
+    console.log(`[NodeUI] Auto-submit #${submitCount + 1} triggered`);
+  }, [submitCount]);
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 p-4 font-sans">
@@ -35,7 +42,7 @@ const NodeUI = () => {
             onInitialize={() => setIsInitialized(true)}
             onStartCapture={() => setIsCapturing(true)}
             onPause={() => setIsPaused(!isPaused)}
-            onSubmit={() => {}}
+            onAutoSubmit={handleAutoSubmit}
           />
           <TerminalLog />
         </div>
