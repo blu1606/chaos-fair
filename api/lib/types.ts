@@ -91,16 +91,36 @@ export interface UpdateApiKeyRequest {
 
 // Randomness types
 export interface RandomnessRequest {
-  count: number;
-  format?: 'hex' | 'base64' | 'uint8' | 'uint32';
+  count?: number;
+  format?: 'integer' | 'float' | 'bytes' | 'hex';
+  min?: number;
+  max?: number;
+}
+
+export interface RandomnessProof {
+  commit_root: string;
+  node_count: number;
+  entropy_quality: number;
+}
+
+export interface RandomnessData {
+  epoch: number;
+  timestamp: string;
+  values: number[] | string[];
+  signature: string;
+  proof: RandomnessProof;
+  walrus_object_id: string;
+  cost_credits: number;
 }
 
 export interface RandomnessResponse {
-  values: string[] | number[];
-  format: string;
-  count: number;
-  entropy_source: string;
-  timestamp: string;
+  request: {
+    count: number;
+    format: string;
+    min?: number;
+    max?: number;
+  };
+  data: RandomnessData;
 }
 
 // Request Logs types
