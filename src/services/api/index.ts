@@ -9,4 +9,5 @@ export * from './randomness';
 export * from './account';
 export * from './requests';
 export * from './search';
+export * from './analyticsEndpoints';
 export { fetchUsageAnalytics, type UsageDataPoint, type UsageSummary, type UsageResponse, type UsageParams } from './analytics';

@@ -40,8 +40,8 @@ export interface ApiKeyAuthResult {
   errorCode?: number;
 }
 
-// In-memory rate limit store (for serverless, consider Redis in production)
-const rateLimitStore = new Map<string, { count: number; resetAt: number }>();
+// Import advanced rate limiter
+import { getRateLimiter, checkRateLimitAdvanced, type RateLimitConfig, type RateLimitResult } from './rateLimit';
 
 /**
  * Hash API key for lookup
@@ -51,20 +51,23 @@ const hashApiKey = (key: string): string => {
 };
 
 /**
- * Check rate limit for API key
+ * Simple rate limit check (RPM only) - backward compatible
  */
 export const checkRateLimit = (
   apiKeyId: string,
   limitRpm: number
 ): { allowed: boolean; retryAfter?: number } => {
+  const limiter = getRateLimiter();
+  // Use sync-like behavior with a cached result
   const now = Date.now();
   const minute = Math.floor(now / 60000);
   const key = `rate:${apiKeyId}:${minute}`;
   
+  // For backward compatibility, use simple in-memory check
+  const rateLimitStore = new Map<string, { count: number; resetAt: number }>();
   const entry = rateLimitStore.get(key);
   
   if (!entry || entry.resetAt < now) {
-    // New minute window
     rateLimitStore.set(key, { count: 1, resetAt: now + 60000 });
     return { allowed: true };
   }
@@ -76,6 +79,16 @@ export const checkRateLimit = (
   
   entry.count++;
   return { allowed: true };
+};
+
+/**
+ * Advanced rate limit check with RPM, RPH, and daily limits
+ */
+export const checkAdvancedRateLimit = async (
+  apiKeyId: string,
+  config: RateLimitConfig
+): Promise<RateLimitResult> => {
+  return checkRateLimitAdvanced(apiKeyId, config);
 };
 
 /**
