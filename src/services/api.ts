@@ -7,35 +7,70 @@ import { config } from '@/config/appMode';
 import { supabase } from '@/integrations/supabase/client';
 import * as mockData from './mockData';
 
-// Dashboard APIs
+// Dashboard Stats API (new edge function)
+export const fetchDashboardStats = async () => {
+  if (config.useMockData) {
+    return {
+      status: 'success',
+      timestamp: new Date().toISOString(),
+      data: {
+        user: { name: 'Test User', avatar_url: null, plan_type: 'pro' },
+        api_metrics: {
+          total_requests: mockData.mockKPIs.totalRequests,
+          requests_trend: `+${mockData.mockKPIs.requestsChange}%`,
+          requests_this_month: mockData.mockKPIs.totalRequests,
+          requests_last_month: Math.round(mockData.mockKPIs.totalRequests * 0.88),
+        },
+        performance: {
+          average_latency_ms: mockData.mockKPIs.avgLatency,
+          latency_status: 'optimal' as const,
+          latency_min: 8,
+          latency_max: 150,
+          p99_latency_ms: 95,
+        },
+        credits: {
+          available_credits: mockData.mockKPIs.creditsTotal - mockData.mockKPIs.creditsUsed,
+          used_this_month: mockData.mockKPIs.creditsUsed,
+          plan_limit: mockData.mockKPIs.creditsTotal,
+          usage_percent: Math.round((mockData.mockKPIs.creditsUsed / mockData.mockKPIs.creditsTotal) * 100),
+          auto_refill_enabled: false,
+        },
+        keys: {
+          active_keys_count: mockData.mockApiKeys.length,
+          nearest_key_expiry_days: 45,
+          expiring_keys: [],
+        },
+        alerts: {
+          unread_notifications: 3,
+          warnings: [],
+        },
+      },
+    };
+  }
+
+  // Call the Edge Function
+  const { data, error } = await supabase.functions.invoke('dashboard-stats');
+  
+  if (error) throw error;
+  return data;
+};
+
+// Legacy Dashboard APIs (kept for backward compatibility)
 export const fetchDashboardKPIs = async (userId: string) => {
   if (config.useMockData) {
     return mockData.mockKPIs;
   }
   
-  // Real API: aggregate from analytics_daily
-  const { data, error } = await supabase
-    .from('analytics_daily')
-    .select('*')
-    .eq('user_id', userId)
-    .order('date', { ascending: false })
-    .limit(30);
-
-  if (error) throw error;
-  
-  // Calculate KPIs from real data
-  const totalRequests = data?.reduce((sum, d) => sum + (d.total_requests || 0), 0) || 0;
-  const avgLatency = data?.length 
-    ? data.reduce((sum, d) => sum + (d.average_latency_ms || 0), 0) / data.length 
-    : 0;
+  // Use the new dashboard-stats endpoint
+  const stats = await fetchDashboardStats();
   
   return {
-    totalRequests,
-    requestsChange: 0, // Calculate vs previous period
-    avgLatency: Math.round(avgLatency),
+    totalRequests: stats.data.api_metrics.total_requests,
+    requestsChange: parseFloat(stats.data.api_metrics.requests_trend),
+    avgLatency: stats.data.performance.average_latency_ms,
     latencyChange: 0,
-    creditsUsed: 0,
-    creditsTotal: 0,
+    creditsUsed: stats.data.credits.used_this_month,
+    creditsTotal: stats.data.credits.plan_limit,
     successRate: 99.5,
     successRateChange: 0,
   };
