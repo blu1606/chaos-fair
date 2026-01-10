@@ -123,6 +123,68 @@ export interface RandomnessResponse {
   data: RandomnessData;
 }
 
+// Verification types
+export interface VerifyRequest {
+  epoch: number;
+  signature: string;
+  proof: string;
+  walrus_object_id: string;
+}
+
+export interface VerificationResult {
+  verified: boolean;
+  epoch: number;
+  valid_commits: number;
+  entropy_quality_score: number;
+  on_chain_reference: string | null;
+  proof_verified: boolean;
+  signature_valid: boolean;
+  walrus_data_found: boolean;
+  verification_time_ms: number;
+}
+
+// VRF types
+export interface VRFRequest {
+  seed?: string;
+  message?: string;
+  proof_level?: 'basic' | 'high';
+}
+
+export interface VRFOutput {
+  epoch: number;
+  vrf_output: string;
+  proof: string;
+  beta: string;
+  gamma: string;
+  public_key: string;
+  seed_used: string;
+  message_used: string;
+  proof_level: 'basic' | 'high';
+  latency_ms: number;
+  verified: boolean;
+  cost_credits: number;
+  walrus_object_id: string;
+}
+
+// Search types
+export interface SearchResult {
+  type: 'api_key' | 'request' | 'randomness';
+  id: string;
+  title: string;
+  description?: string;
+  details?: string;
+  timestamp: string;
+  relevance_score: number;
+}
+
+export interface SearchResponse {
+  query: string;
+  types: string[];
+  results: SearchResult[];
+  count: number;
+  search_time_ms: number;
+}
+
 // Request Logs types
 export interface RequestLogItem {
   id: string;
