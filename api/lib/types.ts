@@ -48,12 +48,22 @@ export interface DashboardStatsData {
   };
 }
 
+// API Key Permissions
+export interface ApiKeyPermissions {
+  read_randomness: boolean;
+  write_randomness: boolean;
+  read_usage: boolean;
+  manage_keys: boolean;
+  manage_billing: boolean;
+}
+
 // API Key types
 export interface ApiKey {
   id: string;
   name: string;
   description: string | null;
   key_preview: string;
+  permissions: ApiKeyPermissions;
   status: 'active' | 'revoked' | 'expired';
   rate_limit_rpm: number;
   rate_limit_daily: number;
@@ -65,9 +75,18 @@ export interface ApiKey {
 export interface CreateApiKeyRequest {
   name: string;
   description?: string;
+  permissions?: ApiKeyPermissions;
   rate_limit_rpm?: number;
   rate_limit_daily?: number;
   expires_at?: string;
+}
+
+export interface UpdateApiKeyRequest {
+  name?: string;
+  description?: string;
+  permissions?: ApiKeyPermissions;
+  rate_limit_rpm?: number;
+  rate_limit_daily?: number;
 }
 
 // Randomness types
