@@ -30,7 +30,18 @@ const curlCode = `curl -X POST https://api.dekaos.io/v1/randomness \\
     "max": 100
   }'`;
 
-const mockOutput = {
+const generateMockOutput = () => {
+  const data = Array.from({ length: 10 }, () => Math.floor(Math.random() * 100) + 1);
+  return {
+    epoch: Math.floor(Math.random() * 2000) + 1000,
+    count: 10,
+    data,
+    timestamp: new Date().toISOString(),
+    latency_ms: Math.floor(Math.random() * 50) + 30
+  };
+};
+
+const initialOutput = {
   epoch: 1247,
   count: 10,
   data: [42, 87, 13, 56, 91, 28, 74, 35, 69, 8],
@@ -42,6 +53,7 @@ const DevPlaygroundSection = () => {
   const [activeTab, setActiveTab] = useState<CodeTab>('sdk');
   const [copied, setCopied] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [output, setOutput] = useState(initialOutput);
 
   const currentCode = activeTab === 'sdk' ? sdkCode : curlCode;
 
@@ -53,15 +65,18 @@ const DevPlaygroundSection = () => {
 
   const handleGenerate = () => {
     setIsGenerating(true);
-    // Simulate API call
-    setTimeout(() => setIsGenerating(false), 1500);
+    // Simulate API call with random delay
+    setTimeout(() => {
+      setOutput(generateMockOutput());
+      setIsGenerating(false);
+    }, 800 + Math.random() * 700);
   };
 
-  // Calculate stats from mock data
+  // Calculate stats from current output
   const stats = {
-    min: Math.min(...mockOutput.data),
-    max: Math.max(...mockOutput.data),
-    mean: Math.round(mockOutput.data.reduce((a, b) => a + b, 0) / mockOutput.data.length),
+    min: Math.min(...output.data),
+    max: Math.max(...output.data),
+    mean: Math.round(output.data.reduce((a, b) => a + b, 0) / output.data.length),
   };
 
   return (
@@ -188,31 +203,31 @@ const DevPlaygroundSection = () => {
                     <span className="text-slate-300">  </span>
                     <span className="text-primary">"epoch"</span>
                     <span className="text-slate-500">: </span>
-                    <span className="text-accent">{mockOutput.epoch}</span>
+                    <span className="text-accent">{output.epoch}</span>
                     <span className="text-slate-500">,</span>{'\n'}
                     
                     <span className="text-slate-300">  </span>
                     <span className="text-primary">"count"</span>
                     <span className="text-slate-500">: </span>
-                    <span className="text-accent">{mockOutput.count}</span>
+                    <span className="text-accent">{output.count}</span>
                     <span className="text-slate-500">,</span>{'\n'}
                     
                     <span className="text-slate-300">  </span>
                     <span className="text-primary">"data"</span>
                     <span className="text-slate-500">: </span>
-                    <span className="text-secondary">[{mockOutput.data.join(', ')}]</span>
+                    <span className="text-secondary">[{output.data.join(', ')}]</span>
                     <span className="text-slate-500">,</span>{'\n'}
                     
                     <span className="text-slate-300">  </span>
                     <span className="text-primary">"timestamp"</span>
                     <span className="text-slate-500">: </span>
-                    <span className="text-secondary">"{mockOutput.timestamp}"</span>
+                    <span className="text-secondary">"{output.timestamp}"</span>
                     <span className="text-slate-500">,</span>{'\n'}
                     
                     <span className="text-slate-300">  </span>
                     <span className="text-primary">"latency_ms"</span>
                     <span className="text-slate-500">: </span>
-                    <span className="text-accent">{mockOutput.latency_ms}</span>{'\n'}
+                    <span className="text-accent">{output.latency_ms}</span>{'\n'}
                     <span className="text-slate-500">{'}'}</span>
                   </code>
                 </pre>
