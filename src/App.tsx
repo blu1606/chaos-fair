@@ -10,6 +10,7 @@ import APIKeys from "./pages/APIKeys";
 import Playground from "./pages/Playground";
 import NodeUI from "./pages/NodeUI";
 import NotFound from "./pages/NotFound";
+import DevModeIndicator from "./components/DevModeIndicator";
 
 const queryClient = new QueryClient();
 
@@ -18,6 +19,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <DevModeIndicator />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />

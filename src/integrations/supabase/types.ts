@@ -14,217 +14,372 @@ export type Database = {
   }
   public: {
     Tables: {
+      accounts: {
+        Row: {
+          auto_refill_amount: number | null
+          auto_refill_enabled: boolean | null
+          auto_refill_threshold: number | null
+          auto_renew: boolean | null
+          available_credits: number | null
+          created_at: string | null
+          id: string
+          plan_limit: number | null
+          plan_type: string
+          subscription_end: string | null
+          subscription_start: string | null
+          total_credits: number | null
+          updated_at: string | null
+          used_credits: number | null
+          user_id: string
+        }
+        Insert: {
+          auto_refill_amount?: number | null
+          auto_refill_enabled?: boolean | null
+          auto_refill_threshold?: number | null
+          auto_renew?: boolean | null
+          available_credits?: number | null
+          created_at?: string | null
+          id?: string
+          plan_limit?: number | null
+          plan_type?: string
+          subscription_end?: string | null
+          subscription_start?: string | null
+          total_credits?: number | null
+          updated_at?: string | null
+          used_credits?: number | null
+          user_id: string
+        }
+        Update: {
+          auto_refill_amount?: number | null
+          auto_refill_enabled?: boolean | null
+          auto_refill_threshold?: number | null
+          auto_renew?: boolean | null
+          available_credits?: number | null
+          created_at?: string | null
+          id?: string
+          plan_limit?: number | null
+          plan_type?: string
+          subscription_end?: string | null
+          subscription_start?: string | null
+          total_credits?: number | null
+          updated_at?: string | null
+          used_credits?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      analytics_daily: {
+        Row: {
+          average_latency_ms: number | null
+          created_at: string | null
+          date: string
+          id: string
+          top_endpoint: string | null
+          total_cost: number | null
+          total_requests: number | null
+          total_requests_error: number | null
+          total_requests_success: number | null
+          unique_endpoints: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          average_latency_ms?: number | null
+          created_at?: string | null
+          date: string
+          id?: string
+          top_endpoint?: string | null
+          total_cost?: number | null
+          total_requests?: number | null
+          total_requests_error?: number | null
+          total_requests_success?: number | null
+          unique_endpoints?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          average_latency_ms?: number | null
+          created_at?: string | null
+          date?: string
+          id?: string
+          top_endpoint?: string | null
+          total_cost?: number | null
+          total_requests?: number | null
+          total_requests_error?: number | null
+          total_requests_success?: number | null
+          unique_endpoints?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       api_keys: {
         Row: {
           created_at: string | null
+          description: string | null
           expires_at: string | null
           id: string
-          is_active: boolean | null
           key_hash: string
+          key_prefix: string | null
+          key_preview: string | null
+          last_ip_address: unknown
           last_used_at: string | null
           name: string
-          rate_limit: number
-          tier: string
+          permissions: Json | null
+          rate_limit_daily: number | null
+          rate_limit_rph: number | null
+          rate_limit_rpm: number | null
+          revoked_at: string | null
+          status: string
+          updated_at: string | null
           user_id: string
         }
         Insert: {
           created_at?: string | null
+          description?: string | null
           expires_at?: string | null
           id?: string
-          is_active?: boolean | null
           key_hash: string
+          key_prefix?: string | null
+          key_preview?: string | null
+          last_ip_address?: unknown
           last_used_at?: string | null
           name: string
-          rate_limit?: number
-          tier?: string
+          permissions?: Json | null
+          rate_limit_daily?: number | null
+          rate_limit_rph?: number | null
+          rate_limit_rpm?: number | null
+          revoked_at?: string | null
+          status?: string
+          updated_at?: string | null
           user_id: string
         }
         Update: {
           created_at?: string | null
+          description?: string | null
           expires_at?: string | null
           id?: string
-          is_active?: boolean | null
           key_hash?: string
+          key_prefix?: string | null
+          key_preview?: string | null
+          last_ip_address?: unknown
           last_used_at?: string | null
           name?: string
-          rate_limit?: number
-          tier?: string
+          permissions?: Json | null
+          rate_limit_daily?: number | null
+          rate_limit_rph?: number | null
+          rate_limit_rpm?: number | null
+          revoked_at?: string | null
+          status?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      credit_transactions: {
+        Row: {
+          account_id: string
+          amount: number
+          balance_after: number | null
+          balance_before: number | null
+          created_at: string | null
+          description: string | null
+          id: string
+          reference_id: string | null
+          reference_type: string | null
+          stripe_invoice_id: string | null
+          stripe_transaction_id: string | null
+          type: string
+          user_id: string
+        }
+        Insert: {
+          account_id: string
+          amount: number
+          balance_after?: number | null
+          balance_before?: number | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          reference_type?: string | null
+          stripe_invoice_id?: string | null
+          stripe_transaction_id?: string | null
+          type: string
+          user_id: string
+        }
+        Update: {
+          account_id?: string
+          amount?: number
+          balance_after?: number | null
+          balance_before?: number | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          reference_type?: string | null
+          stripe_invoice_id?: string | null
+          stripe_transaction_id?: string | null
+          type?: string
           user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "api_keys_user_id_fkey"
-            columns: ["user_id"]
+            foreignKeyName: "credit_transactions_account_id_fkey"
+            columns: ["account_id"]
             isOneToOne: false
-            referencedRelation: "users"
+            referencedRelation: "accounts"
             referencedColumns: ["id"]
           },
         ]
       }
-      epochs: {
+      notifications: {
         Row: {
-          challenge: string
-          commits_count: number
+          action_url: string | null
           created_at: string | null
-          end_time: string
-          finalized_at: string | null
-          id: number
-          randomness: string | null
-          start_time: string
-          status: string
+          data: Json | null
+          dismissed: boolean | null
+          dismissed_at: string | null
+          expires_at: string | null
+          id: string
+          message: string | null
+          read: boolean | null
+          read_at: string | null
+          title: string
+          type: string
+          user_id: string
         }
         Insert: {
-          challenge: string
-          commits_count?: number
+          action_url?: string | null
           created_at?: string | null
-          end_time: string
-          finalized_at?: string | null
-          id: number
-          randomness?: string | null
-          start_time: string
-          status?: string
+          data?: Json | null
+          dismissed?: boolean | null
+          dismissed_at?: string | null
+          expires_at?: string | null
+          id?: string
+          message?: string | null
+          read?: boolean | null
+          read_at?: string | null
+          title: string
+          type: string
+          user_id: string
         }
         Update: {
-          challenge?: string
-          commits_count?: number
+          action_url?: string | null
           created_at?: string | null
-          end_time?: string
-          finalized_at?: string | null
-          id?: number
-          randomness?: string | null
-          start_time?: string
-          status?: string
+          data?: Json | null
+          dismissed?: boolean | null
+          dismissed_at?: string | null
+          expires_at?: string | null
+          id?: string
+          message?: string | null
+          read?: boolean | null
+          read_at?: string | null
+          title?: string
+          type?: string
+          user_id?: string
         }
         Relationships: []
       }
-      node_commits: {
+      profiles: {
         Row: {
-          commit_hash: string
+          avatar_url: string | null
           created_at: string | null
-          epoch_id: number
-          features_hash: string
-          id: number
-          is_valid: boolean | null
-          node_id: string
-          timestamp: string
-          validation_reason: string | null
-        }
-        Insert: {
-          commit_hash: string
-          created_at?: string | null
-          epoch_id: number
-          features_hash: string
-          id?: number
-          is_valid?: boolean | null
-          node_id: string
-          timestamp: string
-          validation_reason?: string | null
-        }
-        Update: {
-          commit_hash?: string
-          created_at?: string | null
-          epoch_id?: number
-          features_hash?: string
-          id?: number
-          is_valid?: boolean | null
-          node_id?: string
-          timestamp?: string
-          validation_reason?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "node_commits_node_id_fkey"
-            columns: ["node_id"]
-            isOneToOne: false
-            referencedRelation: "nodes"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      nodes: {
-        Row: {
+          email_verified_at: string | null
           id: string
-          last_commit_at: string | null
-          metadata: Json | null
-          owner_user_id: string | null
-          public_key: string
-          registered_at: string | null
-          stake_amount: number
-          status: string
-          total_commits: number
-          total_rewards: number
+          name: string
+          organization_name: string | null
+          plan_type: string
+          updated_at: string | null
+          wallet_address: string | null
         }
         Insert: {
-          id?: string
-          last_commit_at?: string | null
-          metadata?: Json | null
-          owner_user_id?: string | null
-          public_key: string
-          registered_at?: string | null
-          stake_amount?: number
-          status?: string
-          total_commits?: number
-          total_rewards?: number
+          avatar_url?: string | null
+          created_at?: string | null
+          email_verified_at?: string | null
+          id: string
+          name: string
+          organization_name?: string | null
+          plan_type?: string
+          updated_at?: string | null
+          wallet_address?: string | null
         }
         Update: {
+          avatar_url?: string | null
+          created_at?: string | null
+          email_verified_at?: string | null
           id?: string
-          last_commit_at?: string | null
-          metadata?: Json | null
-          owner_user_id?: string | null
-          public_key?: string
-          registered_at?: string | null
-          stake_amount?: number
-          status?: string
-          total_commits?: number
-          total_rewards?: number
+          name?: string
+          organization_name?: string | null
+          plan_type?: string
+          updated_at?: string | null
+          wallet_address?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "nodes_owner_user_id_fkey"
-            columns: ["owner_user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
-      usage_logs: {
+      randomness_records: {
         Row: {
-          api_key_id: string
-          endpoint: string
-          id: number
-          ip_address: unknown
-          method: string
-          response_time_ms: number | null
-          status_code: number
+          api_key_id: string | null
+          cost_credits: number | null
+          count: number
+          created_at: string | null
+          epoch: number
+          format: string
+          id: string
+          latency_ms: number | null
+          max_value: number | null
+          min_value: number | null
+          on_chain_proof: string | null
+          on_chain_signature: string | null
           timestamp: string | null
-          user_agent: string | null
+          user_id: string
+          verification_data: Json | null
+          verified: boolean | null
+          verified_at: string | null
+          walrus_object_id: string | null
         }
         Insert: {
-          api_key_id: string
-          endpoint: string
-          id?: number
-          ip_address?: unknown
-          method: string
-          response_time_ms?: number | null
-          status_code: number
+          api_key_id?: string | null
+          cost_credits?: number | null
+          count: number
+          created_at?: string | null
+          epoch: number
+          format: string
+          id?: string
+          latency_ms?: number | null
+          max_value?: number | null
+          min_value?: number | null
+          on_chain_proof?: string | null
+          on_chain_signature?: string | null
           timestamp?: string | null
-          user_agent?: string | null
+          user_id: string
+          verification_data?: Json | null
+          verified?: boolean | null
+          verified_at?: string | null
+          walrus_object_id?: string | null
         }
         Update: {
-          api_key_id?: string
-          endpoint?: string
-          id?: number
-          ip_address?: unknown
-          method?: string
-          response_time_ms?: number | null
-          status_code?: number
+          api_key_id?: string | null
+          cost_credits?: number | null
+          count?: number
+          created_at?: string | null
+          epoch?: number
+          format?: string
+          id?: string
+          latency_ms?: number | null
+          max_value?: number | null
+          min_value?: number | null
+          on_chain_proof?: string | null
+          on_chain_signature?: string | null
           timestamp?: string | null
-          user_agent?: string | null
+          user_id?: string
+          verification_data?: Json | null
+          verified?: boolean | null
+          verified_at?: string | null
+          walrus_object_id?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "usage_logs_api_key_id_fkey"
+            foreignKeyName: "randomness_records_api_key_id_fkey"
             columns: ["api_key_id"]
             isOneToOne: false
             referencedRelation: "api_keys"
@@ -232,33 +387,122 @@ export type Database = {
           },
         ]
       }
-      users: {
+      request_logs: {
         Row: {
+          api_key_id: string | null
+          cost_credits: number | null
+          country_code: string | null
           created_at: string | null
-          email: string
+          endpoint: string
+          error_code: string | null
+          error_message: string | null
           id: string
-          name: string
-          password_hash: string
-          updated_at: string | null
-          wallet_address: string | null
+          ip_address: unknown
+          metadata: Json | null
+          method: string
+          on_chain_epoch: number | null
+          on_chain_tx_hash: string | null
+          query_params: Json | null
+          region: string | null
+          request_body: Json | null
+          request_count: number | null
+          response_body: Json | null
+          response_status: number
+          response_time_ms: number | null
+          user_agent: string | null
+          user_id: string
+          walrus_object_id: string | null
         }
         Insert: {
+          api_key_id?: string | null
+          cost_credits?: number | null
+          country_code?: string | null
           created_at?: string | null
-          email: string
+          endpoint: string
+          error_code?: string | null
+          error_message?: string | null
           id?: string
-          name: string
-          password_hash: string
-          updated_at?: string | null
-          wallet_address?: string | null
+          ip_address: unknown
+          metadata?: Json | null
+          method: string
+          on_chain_epoch?: number | null
+          on_chain_tx_hash?: string | null
+          query_params?: Json | null
+          region?: string | null
+          request_body?: Json | null
+          request_count?: number | null
+          response_body?: Json | null
+          response_status: number
+          response_time_ms?: number | null
+          user_agent?: string | null
+          user_id: string
+          walrus_object_id?: string | null
         }
         Update: {
+          api_key_id?: string | null
+          cost_credits?: number | null
+          country_code?: string | null
           created_at?: string | null
-          email?: string
+          endpoint?: string
+          error_code?: string | null
+          error_message?: string | null
           id?: string
-          name?: string
-          password_hash?: string
-          updated_at?: string | null
-          wallet_address?: string | null
+          ip_address?: unknown
+          metadata?: Json | null
+          method?: string
+          on_chain_epoch?: number | null
+          on_chain_tx_hash?: string | null
+          query_params?: Json | null
+          region?: string | null
+          request_body?: Json | null
+          request_count?: number | null
+          response_body?: Json | null
+          response_status?: number
+          response_time_ms?: number | null
+          user_agent?: string | null
+          user_id?: string
+          walrus_object_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "request_logs_api_key_id_fkey"
+            columns: ["api_key_id"]
+            isOneToOne: false
+            referencedRelation: "api_keys"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      search_index: {
+        Row: {
+          content: string | null
+          created_at: string | null
+          id: string
+          object_id: string
+          object_type: string
+          title: string | null
+          tsv: unknown
+          user_id: string
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string | null
+          id?: string
+          object_id: string
+          object_type: string
+          title?: string | null
+          tsv?: unknown
+          user_id: string
+        }
+        Update: {
+          content?: string | null
+          created_at?: string | null
+          id?: string
+          object_id?: string
+          object_type?: string
+          title?: string | null
+          tsv?: unknown
+          user_id?: string
         }
         Relationships: []
       }
