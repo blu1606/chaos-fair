@@ -83,3 +83,44 @@ export interface RandomnessResponse {
   entropy_source: string;
   timestamp: string;
 }
+
+// Request Logs types
+export interface RequestLogItem {
+  id: string;
+  timestamp: string;
+  api_key_name: string;
+  endpoint: string;
+  method: string;
+  response_status: number;
+  response_time_ms: number;
+  cost_credits: number;
+  request_count: number;
+  status: 'success' | 'error';
+  error_message: string | null;
+  ip_address: string;
+}
+
+export interface PaginationInfo {
+  page: number;
+  total_pages: number;
+  total_records: number;
+  limit: number;
+  has_next: boolean;
+  has_prev: boolean;
+}
+
+export interface RequestLogsResponse {
+  data: RequestLogItem[];
+  pagination: PaginationInfo;
+}
+
+export interface RequestLogsParams {
+  page?: number;
+  limit?: number;
+  status?: 'success' | 'error' | 'all';
+  endpoint?: string;
+  api_key_id?: string;
+  from?: string;
+  to?: string;
+  sort?: 'latest' | 'oldest' | 'slowest' | 'most_expensive';
+}

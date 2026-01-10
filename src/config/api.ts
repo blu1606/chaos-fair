@@ -3,6 +3,9 @@
  * Manages API base URL for different environments
  */
 
+import { supabase } from '@/integrations/supabase/client';
+import { config as appModeConfig } from './appMode';
+
 // Get API base URL from environment or use Supabase Edge Functions as fallback
 export const getApiBaseUrl = (): string => {
   // Check for Vercel API URL first (production)
@@ -23,20 +26,29 @@ export const getApiBaseUrl = (): string => {
 
 export const API_BASE_URL = getApiBaseUrl();
 
+// API Configuration
+export const API_CONFIG = {
+  baseUrl: API_BASE_URL,
+  useMockData: appModeConfig.useMockData,
+} as const;
+
 // API Endpoints
 export const API_ENDPOINTS = {
   // Dashboard
-  dashboardStats: '/dashboard-stats',
+  dashboardStats: `${API_BASE_URL}/dashboard-stats`,
   
   // API Keys
-  keys: '/keys',
-  keyById: (id: string) => `/keys/${id}`,
+  keys: `${API_BASE_URL}/keys`,
+  keyById: (id: string) => `${API_BASE_URL}/keys/${id}`,
   
   // Randomness
-  generateRandomness: '/randomness/generate',
+  generateRandomness: `${API_BASE_URL}/randomness/generate`,
+  
+  // Request Logs
+  requests: `${API_BASE_URL}/requests`,
   
   // Health
-  health: '/health',
+  health: `${API_BASE_URL}/health`,
 } as const;
 
 // Helper to build full URL
@@ -47,4 +59,19 @@ export const buildApiUrl = (endpoint: string): string => {
 // Check if using Vercel API
 export const isUsingVercelApi = (): boolean => {
   return !!import.meta.env.VITE_API_URL;
+};
+
+// Get auth headers for API requests
+export const getAuthHeaders = async (): Promise<HeadersInit> => {
+  const { data: { session } } = await supabase.auth.getSession();
+  
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json',
+  };
+
+  if (session?.access_token) {
+    headers['Authorization'] = `Bearer ${session.access_token}`;
+  }
+
+  return headers;
 };
