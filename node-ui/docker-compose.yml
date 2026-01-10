@@ -1,0 +1,110 @@
+# ===========================================
+# deKAOS Node Stack - Docker Compose
+# Runs Node UI + Daemon together
+# ===========================================
+
+version: '3.8'
+
+services:
+  # ===========================================
+  # Node UI - Web Interface (Port 3000)
+  # ===========================================
+  node-ui:
+    build:
+      context: ..
+      dockerfile: node-ui/Dockerfile
+      args:
+        - VITE_NODE_API_URL=http://localhost:3001/api
+        - VITE_ENABLE_MOCK_FALLBACK=false
+        - VITE_ENABLE_WEBSOCKET=true
+    container_name: dekaos-node-ui
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      daemon:
+        condition: service_healthy
+    networks:
+      - dekaos-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.node-ui.rule=Host(`node.localhost`)"
+      - "traefik.http.services.node-ui.loadbalancer.server.port=3000"
+
+  # ===========================================
+  # Node Daemon - Rust Binary (Port 3001)
+  # ===========================================
+  daemon:
+    image: ghcr.io/dekaos/dekaos-node:latest
+    # Or build from source:
+    # build:
+    #   context: ../crates/dekaos-node
+    #   dockerfile: Dockerfile
+    container_name: dekaos-daemon
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      # Solana configuration
+      - SOLANA_RPC_URL=${SOLANA_RPC_URL:-https://api.mainnet-beta.solana.com}
+      - SOLANA_NETWORK=${SOLANA_NETWORK:-mainnet-beta}
+      # Node configuration
+      - NODE_WALLET_PATH=/data/wallet.json
+      - NODE_LOG_LEVEL=info
+      - NODE_API_PORT=3001
+      - NODE_API_HOST=0.0.0.0
+      # CORS for UI access
+      - CORS_ALLOWED_ORIGINS=http://localhost:3000,http://node-ui:3000
+    volumes:
+      # Persist wallet and data
+      - dekaos-data:/data
+      # Mount audio devices (Linux only)
+      - /dev/snd:/dev/snd
+    devices:
+      - /dev/snd:/dev/snd
+    group_add:
+      - audio
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - dekaos-network
+
+# ===========================================
+# Networks
+# ===========================================
+networks:
+  dekaos-network:
+    driver: bridge
+
+# ===========================================
+# Volumes
+# ===========================================
+volumes:
+  dekaos-data:
+    driver: local
+
+# ===========================================
+# Usage Examples
+# ===========================================
+#
+# 1. Start everything:
+#    docker-compose up -d
+#
+# 2. View logs:
+#    docker-compose logs -f
+#
+# 3. Stop everything:
+#    docker-compose down
+#
+# 4. Rebuild after changes:
+#    docker-compose up -d --build
+#
+# 5. Check health:
+#    curl http://localhost:3000/health  # UI
+#    curl http://localhost:3001/api/health  # Daemon
+#
+# ===========================================

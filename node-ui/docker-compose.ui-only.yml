@@ -1,0 +1,41 @@
+# ===========================================
+# Lightweight Docker Compose - UI Only
+# For development or when daemon runs externally
+# ===========================================
+
+version: '3.8'
+
+services:
+  node-ui:
+    build:
+      context: ..
+      dockerfile: node-ui/Dockerfile
+      args:
+        # Point to external daemon
+        - VITE_NODE_API_URL=${NODE_API_URL:-http://host.docker.internal:3001/api}
+        - VITE_ENABLE_MOCK_FALLBACK=true
+        - VITE_ENABLE_WEBSOCKET=true
+    container_name: dekaos-node-ui
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    extra_hosts:
+      # Allow accessing host machine's daemon
+      - "host.docker.internal:host-gateway"
+
+# ===========================================
+# Usage
+# ===========================================
+#
+# 1. Run daemon on host machine:
+#    cd crates/dekaos-node && cargo run
+#
+# 2. Start UI container:
+#    docker-compose -f docker-compose.ui-only.yml up -d
+#
+# 3. Access UI:
+#    http://localhost:3000
+#
+# 4. With custom daemon URL:
+#    NODE_API_URL=http://192.168.1.100:3001/api docker-compose -f docker-compose.ui-only.yml up -d
+#
